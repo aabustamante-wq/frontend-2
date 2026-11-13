@@ -13,12 +13,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-} from "@/components/ui/navigation-menu";
 
 const NAV_ITEMS = [
   { label: "Dashboard", href: "/dashboard" },
@@ -34,7 +28,7 @@ const SCHEMA_MODULES = [
     title: "Customers",
     table: "Customer",
     description:
-      "Manage customer names, emails, phone numbers, and delivery addresses.",
+      "Manage customer profiles, emails, phone numbers, and delivery addresses.",
     href: "/dashboard/customers",
     stat: "Manage Customers",
   },
@@ -42,7 +36,7 @@ const SCHEMA_MODULES = [
     title: "Restaurants",
     table: "Restaurant",
     description:
-      "Configure branch names, locations, contact numbers, and operating hours.",
+      "Configure branch locations, contact info, and opening/closing schedules.",
     href: "/dashboard/restaurants",
     stat: "Manage Restaurants",
   },
@@ -50,15 +44,15 @@ const SCHEMA_MODULES = [
     title: "Food Items",
     table: "food_item",
     description:
-      "Maintain menu items, unit prices, and restaurant menu assignments.",
+      "Maintain menu items, pricing, and restaurant menu assignments.",
     href: "/dashboard/food-items",
     stat: "Manage Menu",
   },
   {
-    title: "Orders & Order Items",
+    title: "Orders & Line Items",
     table: "orders · order_item",
     description:
-      "Track order dates, statuses, item quantities, subtotals, and totals.",
+      "Track order statuses, quantities, unit prices, subtotals, and grand totals.",
     href: "/dashboard/orders",
     stat: "Manage Orders",
   },
@@ -66,7 +60,7 @@ const SCHEMA_MODULES = [
     title: "Payments",
     table: "payment",
     description:
-      "Monitor payment methods, dates, amounts, and transaction statuses.",
+      "Monitor payment methods, transaction dates, amounts, and settlement statuses.",
     href: "/dashboard/payments",
     stat: "Manage Payments",
   },
@@ -89,7 +83,6 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-[#1c1714] font-sans text-white">
-      {/* Header with shadcn NavigationMenu */}
       <header className="sticky top-0 z-50 border-b border-white/10 bg-[#15110f]/95 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <Link href="/dashboard" className="flex items-center gap-3">
@@ -104,30 +97,25 @@ export default function DashboardPage() {
             </span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <NavigationMenu className="hidden md:flex">
-            <NavigationMenuList className="gap-1">
-              {NAV_ITEMS.map((item) => {
-                const isActive = pathname === item.href;
-                return (
-                  <NavigationMenuItem key={item.href}>
-                    <NavigationMenuLink
-                      asChild
-                      className={`rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors ${
-                        isActive
-                          ? "bg-[#4338ca] text-white hover:bg-[#3730a3] hover:text-white"
-                          : "bg-transparent text-stone-300 hover:bg-white/10 hover:text-white"
-                      }`}
-                    >
-                      <Link href={item.href}>{item.label}</Link>
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
-                );
-              })}
-            </NavigationMenuList>
-          </NavigationMenu>
+          <nav className="hidden items-center gap-1 md:flex">
+            {NAV_ITEMS.map((item) => {
+              const isActive = pathname === item.href;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors ${
+                    isActive
+                      ? "bg-[#4338ca] text-white"
+                      : "text-stone-300 hover:bg-white/10 hover:text-white"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
+          </nav>
 
-          {/* Actions */}
           <div className="flex items-center gap-3">
             <Button
               onClick={handleLogout}
@@ -167,7 +155,6 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Mobile Dropdown */}
         {mobileMenuOpen && (
           <nav className="border-t border-white/10 bg-[#15110f] px-6 py-3 md:hidden">
             <div className="flex flex-col gap-1.5">
@@ -193,19 +180,17 @@ export default function DashboardPage() {
         )}
       </header>
 
-      {/* Main Content */}
       <main className="mx-auto max-w-6xl space-y-8 px-6 py-10">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">
             RESTAURANT ORDERING SYSTEM
           </h1>
           <p className="mt-1 text-xs text-stone-300">
-            Database-driven platform designed to manage customers, restaurants,
-            food items, orders, order items, and payments.
+            Database-driven platform designed to manage customers, restaurant
+            branches, food items, orders, order line items, and payments.
           </p>
         </div>
 
-        {/* Summary Cards */}
         <div className="grid gap-6 sm:grid-cols-3">
           <Card className="border border-white/15 bg-white/10 text-white backdrop-blur-md">
             <CardHeader className="pb-2">
@@ -250,7 +235,6 @@ export default function DashboardPage() {
           </Card>
         </div>
 
-        {/* Database Entity Cards */}
         <section className="space-y-4">
           <h2 className="text-xs font-semibold uppercase tracking-wider text-stone-400">
             Database Tables
